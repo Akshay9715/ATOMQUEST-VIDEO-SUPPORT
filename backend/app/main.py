@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-
+from fastapi.middleware.cors import CORSMiddleware
 from app.db import create_tables
 
 from app.api.user import router as user_router
@@ -21,10 +21,18 @@ from app.api.livekit import (
     router as livekit_router
 )
 
+
+
 fastapi_app = FastAPI()
 
 
-
+fastapi_app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],          # Allow all origins (for testing)
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 fastapi_app.include_router(
     livekit_router
