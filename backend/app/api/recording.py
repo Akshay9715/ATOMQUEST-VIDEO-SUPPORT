@@ -12,6 +12,10 @@ from app.models.recording import Recording
 import os
 import uuid
 
+from app.core.metrics import (
+    recordings_uploaded
+)
+
 router = APIRouter(
     prefix="/recordings",
     tags=["Recordings"]
@@ -56,6 +60,8 @@ async def upload_recording(
     db.add(recording)
     db.commit()
     db.refresh(recording)
+
+    recordings_uploaded.inc()
 
     return {
         "recording_id": recording.id,

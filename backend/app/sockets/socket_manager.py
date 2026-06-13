@@ -7,6 +7,11 @@ from app.models.chat_message import (
 from app.core.metrics import (
     messages_sent
 )
+from app.core.reconnect_manager import (
+    pending_disconnects
+)
+
+import time
 
 sio = socketio.AsyncServer(
     async_mode="asgi",
@@ -16,10 +21,18 @@ sio = socketio.AsyncServer(
 @sio.event
 async def connect(sid, environ):
     print(f"Connected: {sid}")
+    if sid in pending_disconnects:
+        del pending_disconnects[sid]
+        print("Reconnected successfully")
 
 @sio.event
 async def disconnect(sid):
-    print(f"Disconnected: {sid}")
+
+    pending_disconnects[sid] = time.time()
+
+    print(
+        f"Pending disconnect: {sid}"
+    )
 
 
 @sio.event

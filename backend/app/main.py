@@ -33,6 +33,11 @@ from app.api.files import (
 from app.api.metrics import (
     router as metrics_router
 )
+import asyncio
+
+from app.services.reconnect_cleanup import (
+    cleanup_disconnects
+)
 
 
 fastapi_app = FastAPI()
@@ -72,9 +77,11 @@ fastapi_app.include_router(
 
 
 @fastapi_app.on_event("startup")
-def startup():
-    create_tables()
+async def startup():
 
+    asyncio.create_task(
+        cleanup_disconnects()
+    )
 
 fastapi_app.include_router(user_router)
 
