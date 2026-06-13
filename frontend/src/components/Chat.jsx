@@ -65,7 +65,7 @@ export default function Chat({ sessionId, userId }) {
         }}
       >
         {messages.map((msg, index) => (
-          <div key={index}>
+          <div className="space-y-2" key={index}>
             <b>{msg.sender_id}</b>:{" "}
             {msg.message.startsWith("[FILE]")
               ? (() => {
@@ -86,12 +86,33 @@ export default function Chat({ sessionId, userId }) {
           </div>
         ))}
       </div>
-
-      <input value={message} onChange={(e) => setMessage(e.target.value)} />
-      <input type="file" onChange={(e) => setSelectedFile(e.target.files[0])} />
-      <button onClick={uploadFile}>Upload File</button>
-
-      <button onClick={sendMessage}>Send</button>
+      <div>
+        {" "}
+        <input
+          className="flex-1 bg-slate-900 border border-slate-700 rounded-lg p-2"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+        />
+        <button
+          className="bg-blue-600 px-4 py-2 rounded-lg m-2"
+          onClick={sendMessage}
+        >
+          Send
+        </button>
+      </div>
+      <div>
+        <input
+          className="flex-1 bg-slate-900 border border-slate-700 rounded-lg p-2"
+          type="file"
+          onChange={(e) => setSelectedFile(e.target.files[0])}
+        />
+        <button
+          className="bg-green-600 px-4 py-2 rounded-lg m-2"
+          onClick={uploadFile}
+        >
+          Upload File
+        </button>
+      </div>
     </div>
   );
 }

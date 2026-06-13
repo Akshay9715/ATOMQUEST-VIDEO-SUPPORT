@@ -21,9 +21,13 @@ export default function RecordingList() {
       <h3>Recordings</h3>
 
       {recordings.map((recording) => (
-        <div key={recording.id}>
+        <div
+          className="flex justify-between items-center bg-slate-700  p-2 rounded-lg m-2"
+          key={recording.id}
+        >
           Recording #{recording.id}
           <a
+            className=""
             href={`http://localhost:8000/recordings/${recording.id}`}
             target="_blank"
           >

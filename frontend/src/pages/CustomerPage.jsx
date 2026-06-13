@@ -29,9 +29,18 @@ export default function CustomerPage() {
   }
 
   return (
-    <>
-      <VideoRoom token={token} />
-      <Chat sessionId={1} userId={2} />
-    </>
+    <div className="min-h-screen bg-slate-900 text-white p-6">
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold">Customer Support Session</h1>
+      </div>
+
+      <div className="bg-slate-800 rounded-2xl p-4 mb-6">
+        <VideoRoom token={token} />
+      </div>
+
+      <div className="bg-slate-800 rounded-2xl p-4">
+        <Chat sessionId={1} userId={2} />
+      </div>
+    </div>
   );
 }

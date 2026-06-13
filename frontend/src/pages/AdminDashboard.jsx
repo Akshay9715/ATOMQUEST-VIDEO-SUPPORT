@@ -9,6 +9,10 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     loadDashboard();
+
+    const interval = setInterval(loadDashboard, 5000);
+
+    return () => clearInterval(interval);
   }, []);
 
   const loadDashboard = async () => {

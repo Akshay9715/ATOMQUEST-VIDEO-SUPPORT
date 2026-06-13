@@ -2,107 +2,69 @@ import { useRef } from "react";
 import axios from "axios";
 
 export default function Recorder() {
+  const mediaRecorderRef = useRef(null);
 
-  const mediaRecorderRef =
-    useRef(null);
+  const chunksRef = useRef([]);
 
-  const chunksRef =
-    useRef([]);
+  const startRecording = async () => {
+    const stream = await navigator.mediaDevices.getDisplayMedia({
+      video: true,
+      audio: true,
+    });
 
-  const startRecording =
-    async () => {
+    const recorder = new MediaRecorder(stream);
 
-      const stream =
-        await navigator.mediaDevices
-          .getDisplayMedia({
-            video: true,
-            audio: true,
-          });
+    mediaRecorderRef.current = recorder;
 
-      const recorder =
-        new MediaRecorder(
-          stream
-        );
+    chunksRef.current = [];
 
-      mediaRecorderRef.current =
-        recorder;
-
-      chunksRef.current = [];
-
-      recorder.ondataavailable =
-        (event) => {
-
-          if (
-            event.data.size > 0
-          ) {
-            chunksRef.current.push(
-              event.data
-            );
-          }
-        };
-
-      recorder.start();
+    recorder.ondataavailable = (event) => {
+      if (event.data.size > 0) {
+        chunksRef.current.push(event.data);
+      }
     };
 
-  const stopRecording =
-    async () => {
+    recorder.start();
+  };
 
-      const recorder =
-        mediaRecorderRef.current;
+  const stopRecording = async () => {
+    const recorder = mediaRecorderRef.current;
 
-      recorder.stop();
+    recorder.stop();
 
-      recorder.onstop =
-        async () => {
+    recorder.onstop = async () => {
+      const blob = new Blob(chunksRef.current, {
+        type: "video/webm",
+      });
 
-          const blob =
-            new Blob(
-              chunksRef.current,
-              {
-                type:
-                  "video/webm",
-              }
-            );
+      const formData = new FormData();
 
-          const formData =
-            new FormData();
+      formData.append("file", blob, "meeting.webm");
 
-          formData.append(
-            "file",
-            blob,
-            "meeting.webm"
-          );
+      await axios.post(
+        "http://localhost:8000/recordings/upload?session_id=1",
+        formData,
+      );
 
-          await axios.post(
-            "http://localhost:8000/recordings/upload?session_id=1",
-            formData
-          );
-
-          alert(
-            "Recording Uploaded"
-          );
-        };
+      alert("Recording Uploaded");
     };
+  };
 
-      return (
-    <div>
-
+  return (
+    <div className="flex gap-2 mb-4">
       <button
-        onClick={
-          startRecording
-        }
+        className="bg-green-600 px-4 py-2 rounded-lg"
+        onClick={startRecording}
       >
         Start Recording
       </button>
 
       <button
-        onClick={
-          stopRecording
-        }
+        className="bg-red-600 px-4 py-2 rounded-lg"
+        onClick={stopRecording}
       >
         Stop Recording
       </button>
-
     </div>
   );
 }

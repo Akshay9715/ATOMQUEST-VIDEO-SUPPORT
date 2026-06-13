@@ -31,13 +31,32 @@ export default function AgentPage() {
   }
 
   return (
-    <>
-      <VideoRoom token={token} />
-      <Recorder />
+    <div className="min-h-screen bg-slate-900 text-white p-6">
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold">Agent Support Console</h1>
 
-      <RecordingList />
+        <p className="text-slate-400">Live customer support session</p>
+      </div>
 
-      <Chat sessionId={1} userId={1} />
-    </>
+      <div className="bg-slate-800 rounded-2xl p-4 mb-6">
+        <VideoRoom token={token} />
+      </div>
+
+      <div className="grid grid-cols-2 gap-6">
+        <div className="bg-slate-800 rounded-2xl p-4">
+          <h2 className="text-xl font-semibold mb-4">Chat</h2>
+
+          <Chat sessionId={1} userId={1} />
+        </div>
+
+        <div className="bg-slate-800 rounded-2xl p-4">
+          <h2 className="text-xl font-semibold mb-4">Session Resources</h2>
+
+          <Recorder />
+
+          <RecordingList />
+        </div>
+      </div>
+    </div>
   );
 }

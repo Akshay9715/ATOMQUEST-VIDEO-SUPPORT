@@ -1,5 +1,7 @@
 import { LiveKitRoom, VideoConference } from "@livekit/components-react";
 
+import "../../node_modules/@livekit/components-styles/dist/general/index.css";
+
 export default function VideoRoom({ token }) {
   return (
     <LiveKitRoom
