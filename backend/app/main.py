@@ -7,6 +7,10 @@ from app.api.user import router as user_router
 from app.api.session import (
     router as session_router
 )
+from app.api.participant import (
+    router as participant_router
+)
+
 
 app = FastAPI()
 
@@ -18,7 +22,7 @@ def startup():
 
 app.include_router(user_router)
 
-
+app.include_router(participant_router)
 app.include_router(session_router)
 
 @app.get("/")

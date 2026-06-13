@@ -9,6 +9,8 @@ from app.db.session import get_db
 from app.models.user import User
 from app.models.session import Session as CallSession
 
+from datetime import datetime
+
 from app.schemas.session import (
     SessionCreate,
     SessionResponse
@@ -61,3 +63,54 @@ def create_session(
     db.refresh(session)
 
     return session
+
+@router.get("/{session_id}")
+def get_session(
+    session_id: int,
+    db: Session = Depends(get_db)
+):
+    session = (
+        db.query(CallSession)
+        .filter(
+            CallSession.id == session_id
+        )
+        .first()
+    )
+
+    if not session:
+        raise HTTPException(
+            status_code=404,
+            detail="Session not found"
+        )
+
+    return session
+
+
+@router.post("/{session_id}/end")
+def end_session(
+    session_id: int,
+    db: Session = Depends(get_db)
+):
+
+    session = (
+        db.query(CallSession)
+        .filter(
+            CallSession.id == session_id
+        )
+        .first()
+    )
+
+    if not session:
+        raise HTTPException(
+            status_code=404,
+            detail="Session not found"
+        )
+
+    session.status = "ended"
+    session.ended_at = datetime.utcnow()
+
+    db.commit()
+
+    return {
+        "message": "Session ended"
+    }
