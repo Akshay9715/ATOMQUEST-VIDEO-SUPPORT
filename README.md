@@ -68,12 +68,12 @@ Monitoring
 frontend/
 backend/
 
-backend/app/
-├── api
-├── models
-├── services
-├── sockets
-├── db
+    backend/app/
+    ├── api
+    ├── models
+    ├── services
+    ├── sockets
+    ├── db
 
 uploads/
 recordings/
@@ -81,30 +81,31 @@ recordings/
 ## Backend Setup
 
 cd backend
-
+```python
 python -m venv .venv
 
 pip install -r requirements.txt
 
 uvicorn app.main:app --reload
-
+```
 ## LiveKit Setup
-
+```
 docker run --rm \
 -p 7880:7880 \
 -p 7881:7881 \
 -v ${PWD}/livekit.yaml:/livekit.yaml \
 livekit/livekit-server \
 --config /livekit.yaml
+```
 
 ## Frontend Setup
-
+```
 cd frontend
 
 npm install
 
 npm run dev
-
+```
 ## Demo Credentials
 
 Agent
