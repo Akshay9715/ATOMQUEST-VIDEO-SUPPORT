@@ -86,19 +86,12 @@ def active_sessions(
 
     sessions = (
         db.query(CallSession)
-        .filter(
-            CallSession.status == "active"
-        )
-        .all()
-    )
+        .filter(CallSession.status == "active").all())
 
     return sessions
 
 @router.get("/{session_id}")
-def get_session(
-    session_id: int,
-    db: Session = Depends(get_db)
-):
+def get_session(session_id: int,db: Session = Depends(get_db)):
     session = (
         db.query(CallSession)
         .filter(
@@ -118,10 +111,7 @@ def get_session(
 
 
 @router.post("/{session_id}/end")
-def end_session(
-    session_id: int,
-    db: Session = Depends(get_db)
-):
+def end_session(session_id: int, db: Session = Depends(get_db)):
 
     session = (
         db.query(CallSession)

@@ -20,11 +20,4 @@ def get_chat_history(
     db: Session = Depends(get_db)
 ):
 
-    return (
-        db.query(ChatMessage)
-        .filter(
-            ChatMessage.session_id
-            == session_id
-        )
-        .all()
-    )
+    return (db.query(ChatMessage).filter(ChatMessage.session_id == session_id).all())

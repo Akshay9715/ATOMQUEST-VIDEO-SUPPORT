@@ -10,13 +10,6 @@ class User(Base):
 
     name = Column(String, nullable=False)
 
-    email = Column(
-        String,
-        unique=True,
-        nullable=False
-    )
+    email = Column(String, unique=True, nullable=False)
 
-    role = Column(
-        String,
-        nullable=False
-    )
+    role = Column(String, nullable=False)

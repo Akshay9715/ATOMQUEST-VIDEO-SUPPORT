@@ -14,9 +14,8 @@ from app.schemas.participant import (
     JoinSessionRequest,
     ParticipantResponse
 )
-from app.core.metrics import (
-    connected_participants
-)
+from app.core.metrics import connected_participants
+
 from datetime import datetime
 
 router = APIRouter(
@@ -28,16 +27,9 @@ router = APIRouter(
     "/join",
     response_model=ParticipantResponse
 )
-def join_session(
-    payload: JoinSessionRequest,
-    db: Session = Depends(get_db)
-):
+def join_session(payload: JoinSessionRequest, db: Session = Depends(get_db)):
 
-    user = (
-        db.query(User)
-        .filter(User.id == payload.user_id)
-        .first()
-    )
+    user = (db.query(User).filter(User.id == payload.user_id).first())
 
     if not user:
         raise HTTPException(
@@ -46,13 +38,7 @@ def join_session(
         )
 
     session = (
-        db.query(CallSession)
-        .filter(
-            CallSession.invite_token
-            == payload.invite_token
-        )
-        .first()
-    )
+        db.query(CallSession).filter(CallSession.invite_token== payload.invite_token).first())
 
     if not session:
         raise HTTPException(
@@ -67,14 +53,11 @@ def join_session(
         )
 
     existing = (
-        db.query(Participant)
-        .filter(
+        db.query(Participant).filter(
             Participant.session_id == session.id,
             Participant.user_id == user.id,
             Participant.left_at == None
-        )
-        .first()
-    )
+        ).first())
 
     if existing:
         return existing
@@ -97,14 +80,9 @@ def join_session(
     return participant
 
 @router.post("/leave/{participant_id}")
-def leave_session(
-    participant_id: int,
-    db: Session = Depends(get_db)
-):
+def leave_session(participant_id: int,db: Session = Depends(get_db)):
 
-    participant = (
-        db.query(Participant)
-        .filter(
+    participant = (db.query(Participant).filter(
             Participant.id == participant_id
         )
         .first()
@@ -126,17 +104,9 @@ def leave_session(
     }
 
 @router.get("/session/{session_id}")
-def get_session_participants(
-    session_id: int,
-    db: Session = Depends(get_db)
-):
+def get_session_participants(session_id: int,db: Session = Depends(get_db)):
 
     participants = (
-        db.query(Participant)
-        .filter(
-            Participant.session_id == session_id
-        )
-        .all()
-    )
+        db.query(Participant).filter(Participant.session_id == session_id).all())
 
     return participants

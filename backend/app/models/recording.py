@@ -12,27 +12,12 @@ from app.db.database import Base
 class Recording(Base):
     __tablename__ = "recordings"
 
-    id = Column(
-        Integer,
-        primary_key=True
-    )
+    id = Column(Integer, primary_key=True)
 
-    session_id = Column(
-        Integer,
-        ForeignKey("sessions.id")
-    )
+    session_id = Column(Integer, ForeignKey("sessions.id"))
 
-    status = Column(
-        String,
-        default="recording"
-    )
+    status = Column(String, default="recording")
 
-    file_path = Column(
-        String,
-        nullable=True
-    )
+    file_path = Column(String, nullable=True)
 
-    created_at = Column(
-        DateTime,
-        default=datetime.utcnow
-    )
+    created_at = Column(DateTime, default=datetime.utcnow)

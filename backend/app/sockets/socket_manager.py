@@ -1,15 +1,9 @@
 import socketio
 from app.db.database import SessionLocal
 
-from app.models.chat_message import (
-    ChatMessage
-)
-from app.core.metrics import (
-    messages_sent
-)
-from app.core.reconnect_manager import (
-    pending_disconnects
-)
+from app.models.chat_message import ChatMessage
+from app.core.metrics import messages_sent
+from app.core.reconnect_manager import pending_disconnects
 
 import time
 
@@ -30,22 +24,14 @@ async def disconnect(sid):
 
     pending_disconnects[sid] = time.time()
 
-    print(
-        f"Pending disconnect: {sid}"
-    )
+    print(f"Pending disconnect: {sid}")
 
 
 @sio.event
-async def join_room(
-    sid,
-    data
-):
+async def join_room(sid, data):
     room = f"session_{data['session_id']}"
 
-    await sio.enter_room(
-        sid,
-        room
-    )
+    await sio.enter_room(sid, room)
 
     await sio.emit(
         "participant_joined",
@@ -56,16 +42,10 @@ async def join_room(
     )
 
 @sio.event
-async def leave_room(
-    sid,
-    data
-):
+async def leave_room(sid, data):
     room = f"session_{data['session_id']}"
 
-    await sio.leave_room(
-        sid,
-        room
-    )
+    await sio.leave_room(sid, room)
 
     await sio.emit(
         "participant_left",
@@ -77,10 +57,7 @@ async def leave_room(
 
 
 @sio.event
-async def send_message(
-    sid,
-    data
-):
+async def send_message(sid, data):
 
     db = SessionLocal()
 

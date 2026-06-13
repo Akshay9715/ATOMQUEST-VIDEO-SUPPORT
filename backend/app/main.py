@@ -4,40 +4,22 @@ from app.db import create_tables
 
 from app.api.user import router as user_router
 
-from app.api.session import (
-    router as session_router
-)
-from app.api.participant import (
-    router as participant_router
-)
+from app.api.session import router as session_router
+from app.api.participant import router as participant_router
 from fastapi import FastAPI
 import socketio
-from app.api.chat import (
-    router as chat_router
-)
+from app.api.chat import router as chat_router
 
 from app.sockets.socket_manager import sio
-from app.api.livekit import (
-    router as livekit_router
-)
-from app.api.recording import (
-    router as recording_router
-)
-from app.api.admin import (
-    router as admin_router
-)
-from app.api.files import (
-    router as files_router
-)
+from app.api.livekit import router as livekit_router
+from app.api.recording import router as recording_router
+from app.api.admin import router as admin_router
+from app.api.files import router as files_router
 
-from app.api.metrics import (
-    router as metrics_router
-)
+from app.api.metrics import router as metrics_router
 import asyncio
 
-from app.services.reconnect_cleanup import (
-    cleanup_disconnects
-)
+from app.services.reconnect_cleanup import cleanup_disconnects
 
 
 fastapi_app = FastAPI()
@@ -51,37 +33,26 @@ fastapi_app.add_middleware(
     allow_headers=["*"],
 )
 
-fastapi_app.include_router(
-    livekit_router
-)
+fastapi_app.include_router(livekit_router)
 
-fastapi_app.include_router(
-    recording_router
-)
+fastapi_app.include_router(recording_router)
 
-fastapi_app.include_router(
-    admin_router
-)
+fastapi_app.include_router(admin_router)
 
-fastapi_app.include_router(
-    files_router
-)
+fastapi_app.include_router(files_router)
 
-fastapi_app.include_router(
-    metrics_router
-)
+fastapi_app.include_router(metrics_router)
 
-fastapi_app.include_router(
-    chat_router
-)
+fastapi_app.include_router(chat_router)
 
 
 @fastapi_app.on_event("startup")
-async def startup():
-
+def startup():
+    create_tables()
     asyncio.create_task(
         cleanup_disconnects()
     )
+
 
 fastapi_app.include_router(user_router)
 

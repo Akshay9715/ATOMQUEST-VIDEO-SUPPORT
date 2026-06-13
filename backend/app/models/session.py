@@ -12,34 +12,14 @@ from app.db.database import Base
 class Session(Base):
     __tablename__ = "sessions"
 
-    id = Column(
-        Integer,
-        primary_key=True,
-        index=True
-    )
+    id = Column(Integer, primary_key=True, index=True)
 
-    agent_id = Column(
-        Integer,
-        ForeignKey("users.id")
-    )
+    agent_id = Column(Integer, ForeignKey("users.id"))
 
-    invite_token = Column(
-        String,
-        unique=True,
-        nullable=False
-    )
+    invite_token = Column(String, unique=True, nullable=False)
 
-    status = Column(
-        String,
-        default="created"
-    )
+    status = Column(String, default="created")
 
-    started_at = Column(
-        DateTime,
-        default=datetime.utcnow
-    )
+    started_at = Column(DateTime, default=datetime.utcnow)
 
-    ended_at = Column(
-        DateTime,
-        nullable=True
-    )
+    ended_at = Column(DateTime, nullable=True)

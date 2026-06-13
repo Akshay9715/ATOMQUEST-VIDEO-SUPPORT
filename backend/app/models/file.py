@@ -12,32 +12,14 @@ from app.db.database import Base
 class FileUpload(Base):
     __tablename__ = "files"
 
-    id = Column(
-        Integer,
-        primary_key=True
-    )
+    id = Column(Integer, primary_key=True)
 
-    session_id = Column(
-        Integer,
-        ForeignKey("sessions.id")
-    )
+    session_id = Column(Integer, ForeignKey("sessions.id"))
 
-    sender_id = Column(
-        Integer,
-        ForeignKey("users.id")
-    )
+    sender_id = Column(Integer, ForeignKey("users.id"))
 
-    filename = Column(
-        String,
-        nullable=False
-    )
+    filename = Column(String, nullable=False)
 
-    file_path = Column(
-        String,
-        nullable=False
-    )
+    file_path = Column(String, nullable=False)
 
-    created_at = Column(
-        DateTime,
-        default=datetime.utcnow
-    )
+    created_at = Column(DateTime, default=datetime.utcnow)

@@ -12,27 +12,12 @@ from app.db.database import Base
 class ChatMessage(Base):
     __tablename__ = "chat_messages"
 
-    id = Column(
-        Integer,
-        primary_key=True
-    )
+    id = Column(Integer, primary_key=True)
 
-    session_id = Column(
-        Integer,
-        ForeignKey("sessions.id")
-    )
+    session_id = Column(Integer, ForeignKey("sessions.id"))
 
-    sender_id = Column(
-        Integer,
-        ForeignKey("users.id")
-    )
+    sender_id = Column(Integer, ForeignKey("users.id"))
 
-    message = Column(
-        String,
-        nullable=False
-    )
+    message = Column(String, nullable=False)
 
-    created_at = Column(
-        DateTime,
-        default=datetime.utcnow
-    )
+    created_at = Column(DateTime, default=datetime.utcnow)

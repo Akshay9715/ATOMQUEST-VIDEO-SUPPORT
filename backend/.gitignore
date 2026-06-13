@@ -82,3 +82,6 @@ DS_Store
 atomquest.db
 # environment variables
 .env
+# Data folder
+/recordings
+/uploads
