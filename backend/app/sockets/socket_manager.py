@@ -4,6 +4,9 @@ from app.db.database import SessionLocal
 from app.models.chat_message import (
     ChatMessage
 )
+from app.core.metrics import (
+    messages_sent
+)
 
 sio = socketio.AsyncServer(
     async_mode="asgi",
@@ -83,6 +86,8 @@ async def send_message(
         db.close()
 
     room = f"session_{data['session_id']}"
+
+    messages_sent.inc()
 
     await sio.emit(
         "new_message",

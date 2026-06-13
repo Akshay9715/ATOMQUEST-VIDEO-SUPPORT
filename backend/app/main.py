@@ -20,7 +20,19 @@ from app.sockets.socket_manager import sio
 from app.api.livekit import (
     router as livekit_router
 )
+from app.api.recording import (
+    router as recording_router
+)
+from app.api.admin import (
+    router as admin_router
+)
+from app.api.files import (
+    router as files_router
+)
 
+from app.api.metrics import (
+    router as metrics_router
+)
 
 
 fastapi_app = FastAPI()
@@ -38,15 +50,31 @@ fastapi_app.include_router(
     livekit_router
 )
 
-@fastapi_app.on_event("startup")
-def startup():
-    create_tables()
+fastapi_app.include_router(
+    recording_router
+)
 
+fastapi_app.include_router(
+    admin_router
+)
 
+fastapi_app.include_router(
+    files_router
+)
+
+fastapi_app.include_router(
+    metrics_router
+)
 
 fastapi_app.include_router(
     chat_router
 )
+
+
+@fastapi_app.on_event("startup")
+def startup():
+    create_tables()
+
 
 fastapi_app.include_router(user_router)
 

@@ -64,6 +64,36 @@ def create_session(
 
     return session
 
+
+@router.get("")
+def get_sessions(
+    db: Session = Depends(get_db)
+):
+
+    sessions = (
+        db.query(CallSession)
+        .all()
+    )
+
+    return sessions
+
+
+
+@router.get("/active")
+def active_sessions(
+    db: Session = Depends(get_db)
+):
+
+    sessions = (
+        db.query(CallSession)
+        .filter(
+            CallSession.status == "active"
+        )
+        .all()
+    )
+
+    return sessions
+
 @router.get("/{session_id}")
 def get_session(
     session_id: int,
@@ -84,6 +114,7 @@ def get_session(
         )
 
     return session
+
 
 
 @router.post("/{session_id}/end")
@@ -114,3 +145,4 @@ def end_session(
     return {
         "message": "Session ended"
     }
+

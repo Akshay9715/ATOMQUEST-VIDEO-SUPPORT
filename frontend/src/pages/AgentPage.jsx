@@ -3,6 +3,8 @@ import axios from "axios";
 
 import VideoRoom from "../components/VideoRoom";
 import Chat from "../components/Chat";
+import Recorder from "../components/Recorder";
+import RecordingList from "../components/RecordingList";
 
 export default function AgentPage() {
   const [token, setToken] = useState(null);
@@ -31,6 +33,10 @@ export default function AgentPage() {
   return (
     <>
       <VideoRoom token={token} />
+      <Recorder />
+
+      <RecordingList />
+
       <Chat sessionId={1} userId={1} />
     </>
   );

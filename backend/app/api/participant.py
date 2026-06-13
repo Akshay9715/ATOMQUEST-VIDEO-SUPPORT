@@ -14,6 +14,9 @@ from app.schemas.participant import (
     JoinSessionRequest,
     ParticipantResponse
 )
+from app.core.metrics import (
+    connected_participants
+)
 from datetime import datetime
 
 router = APIRouter(
@@ -89,6 +92,8 @@ def join_session(
     db.commit()
     db.refresh(participant)
 
+    connected_participants.inc()
+
     return participant
 
 @router.post("/leave/{participant_id}")
@@ -114,6 +119,7 @@ def leave_session(
     participant.left_at = datetime.utcnow()
 
     db.commit()
+    connected_participants.dec()
 
     return {
         "message": "Left session"
